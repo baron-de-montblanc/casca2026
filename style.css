@@ -1,0 +1,394 @@
+/* =============================================================
+   style.css — CASCA 2026 poster site
+   Brown University Gemini theme
+   ============================================================= */
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Design tokens ──────────────────────────────────────────── */
+/*
+   Palette is drawn from the Brown University brand and the
+   Gemini-Brown Beamer theme used in the poster itself.
+   Adjust only these variables to retheme the entire site.
+*/
+:root {
+  --bg:       #faf8f5;   /* warm off-white body */
+  --border:   #ddd0c3;   /* soft warm grey rule */
+  --text:     #1a0e06;   /* near-black, warm tint */
+  --muted:    #8a6a58;   /* warm mid-brown for secondary text */
+
+  --brown:    #4e3629;   /* Brown University seal brown */
+  --red:      #c41230;   /* Brown University crimson */
+  --amber:    #b07030;   /* warm accent echo from inferno figures */
+
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'Lato', sans-serif;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  /* Thin top stripe echoes the poster's header band */
+  border-top: 5px solid var(--brown);
+}
+
+/* ── Background canvas (fixed, behind everything) ───────────── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Conference badge ───────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 2px;
+  padding: 0.35em 0.95em;
+  margin-bottom: 2.8rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.1s forwards;
+}
+
+/* ── Horizontal rule ────────────────────────────────────────── */
+.divider {
+  width: 52px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  margin: 2.8rem auto;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.55s forwards;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1.5rem 2rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+  letter-spacing: 0.07em;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INDEX PAGE
+   ═══════════════════════════════════════════════════════════ */
+
+main.landing {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem 3rem;
+  text-align: center;
+}
+
+/* Poster title */
+h1.poster-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.8vw, 2.75rem);
+  line-height: 1.3;
+  max-width: 880px;
+  color: var(--brown);
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.25s forwards;
+}
+
+h1.poster-title em {
+  font-style: italic;
+  color: var(--red);
+}
+
+/* Author + affiliation block */
+.meta {
+  margin-top: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.authors-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.45rem;
+}
+
+.author {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+  font-weight: 400;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* Presenting author: underlined in university red */
+.author--lead {
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-underline-offset: 4px;
+}
+
+.author sup,
+.institution sup {
+  font-size: 0.58em;
+  font-family: var(--font-body);
+  vertical-align: super;
+}
+
+.author sup    { color: var(--red);   }
+.institution sup { color: var(--muted); }
+
+.author-sep {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+  color: var(--muted);
+  user-select: none;
+}
+
+/* Affiliation lines */
+.institutions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.institution {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.65s forwards;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8em 2em;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 0.80rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  background: var(--brown);
+  color: var(--bg);
+  border: 1px solid var(--brown);
+}
+
+.btn-primary:hover {
+  background: #3a2519;
+  border-color: #3a2519;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(78, 54, 41, 0.22);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--brown);
+  border: 1px solid var(--brown);
+}
+
+.btn-secondary:hover {
+  background: var(--brown);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REFERENCES PAGE
+   ═══════════════════════════════════════════════════════════ */
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* Back navigation */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.05s forwards;
+}
+
+.back:hover  { color: var(--brown); }
+.back svg    { width: 14px; height: 14px; }
+
+/* Page header */
+header.refs-header {
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.15s forwards;
+}
+
+.label {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.8rem;
+}
+
+h1.refs-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 5vw, 2.75rem);
+  line-height: 1.15;
+  color: var(--brown);
+}
+
+.sub {
+  margin-top: 0.65rem;
+  font-size: 0.84rem;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Reference list */
+ol.refs {
+  list-style: none;
+}
+
+ol.refs li {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 0 1.1rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+ol.refs li:nth-child(1)    { animation-delay: 0.35s }
+ol.refs li:nth-child(2)    { animation-delay: 0.40s }
+ol.refs li:nth-child(3)    { animation-delay: 0.45s }
+ol.refs li:nth-child(4)    { animation-delay: 0.50s }
+ol.refs li:nth-child(5)    { animation-delay: 0.55s }
+ol.refs li:nth-child(6)    { animation-delay: 0.60s }
+ol.refs li:nth-child(7)    { animation-delay: 0.65s }
+ol.refs li:nth-child(8)    { animation-delay: 0.70s }
+ol.refs li:nth-child(9)    { animation-delay: 0.75s }
+ol.refs li:nth-child(10)   { animation-delay: 0.80s }
+ol.refs li:nth-child(n+11) { animation-delay: 0.85s }
+
+.ref-num {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--border);
+  padding-top: 0.15em;
+  user-select: none;
+}
+
+.ref-body {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.ref-body .authors { color: var(--muted); }
+
+.ref-body .year {
+  color: var(--amber);
+  font-weight: 700;
+}
+
+.ref-body .title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.93rem;
+  color: var(--brown);
+}
+
+.ref-body .journal { color: var(--muted); }
+
+.ref-body a {
+  color: var(--red);
+  text-decoration: none;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+}
+
+.ref-body a:hover { text-decoration: underline; }
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
